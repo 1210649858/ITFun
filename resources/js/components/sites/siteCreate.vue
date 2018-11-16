@@ -60,7 +60,6 @@
                     site_node_id: '',
                     name: '',
                     is_show: false,
-                    sort: 99,
                     url: '',
                     image: '',
                     photo_id: '',

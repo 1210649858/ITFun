@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Photo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Site;
@@ -39,20 +40,21 @@ class SiteController extends Controller
 
     public function edit($id)
     {
-        $site =Site::with('site_node','photo')->find($id);
+        $site =Site::with('photo')->find($id);
         return response()->json($site);
     }
 
     public function update(Request $request, $id)
     {
-        return $request;false;
         $site =Site::find($id);
         $site->update($request->all());
     }
 
     public function destroy($id)
     {
-        //
+        $site =Site::find($id);
+        Site::destroy($id);
+        Photo::destroy($site->photo_id);
     }
 
     public function change_attr(Request $request){

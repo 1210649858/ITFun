@@ -60,8 +60,6 @@
                 site: {
                     site_node_id: '',
                     name: '',
-                    is_show: false,
-                    sort: 99,
                     url: '',
                     photo_id: '',
                 },
@@ -96,9 +94,11 @@
                 let id= this.$route.params.id;
                 axios.get(`/admin/sites/${id}/edit`)
                     .then((res) => {
-                        console.log(res)
+                        //console.log(res)
                         this.site = res.data;
                         this.photo =res.data.photo;
+                        let data =this.site.is_show;//单独取值
+                        this.site.is_show =!!data;//重新赋值
                         //this.fileList = [{name:res.data.photo.image,url:res.data.photo.image}];
                     })
             },
@@ -106,14 +106,14 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         axios.put(`/admin/sites/${this.site.id}`, this.site,this.photo)
-                            // .then((res) => {
-                            //     this.$message({
-                            //         message: '(∩ _ ∩)编辑成功',
-                            //         type: 'success'
-                            //     });
-                            //     this.init();
-                            //     this.$router.push({name: 'sites'})
-                            // });
+                            .then((res) => {
+                                this.$message({
+                                    message: '(∩ _ ∩)编辑成功',
+                                    type: 'success'
+                                });
+                                this.init();
+                                this.$router.push({name: 'sites'})
+                            });
                     } else {
                         console.log('error submit!!');
                         return false;

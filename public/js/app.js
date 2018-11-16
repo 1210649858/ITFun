@@ -99798,19 +99798,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$router.push({ name: 'siteCreate' });
         },
         siteDelete: function siteDelete(index, row) {
-            console.log(index, row);
+            var _this3 = this;
+
+            this.$confirm('亲 (●ﾟωﾟ●)确定要删除吗?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(function () {
+                axios.delete('/admin/sites/' + row.id).then(function (res) {
+                    _this3.$message({
+                        type: 'success',
+                        message: 'OK,删除成功!'
+                    });
+                    _this3.init();
+                });
+            }).catch(function () {
+                _this3.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+            });
         },
 
         //是否显示
         change_attr: function change_attr(row) {
-            var _this3 = this;
+            var _this4 = this;
 
             axios.patch('/admin/site/change_attr', { id: row.id, is_show: row.is_show }).then(function (res) {
-                _this3.$message({
+                _this4.$message({
                     type: 'success',
                     message: '改变成功!'
                 });
-                _this3.init();
+                _this4.init();
             });
         },
 
@@ -100459,7 +100478,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 site_node_id: '',
                 name: '',
                 is_show: false,
-                sort: 99,
                 url: '',
                 image: '',
                 photo_id: ''
@@ -100728,8 +100746,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             site: {
                 site_node_id: '',
                 name: '',
-                is_show: false,
-                sort: 99,
                 url: '',
                 photo_id: ''
             },
@@ -100759,9 +100775,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
             var id = this.$route.params.id;
             axios.get('/admin/sites/' + id + '/edit').then(function (res) {
-                console.log(res);
+                //console.log(res)
                 _this.site = res.data;
                 _this.photo = res.data.photo;
+                var data = _this.site.is_show; //单独取值
+                _this.site.is_show = !!data; //重新赋值
                 //this.fileList = [{name:res.data.photo.image,url:res.data.photo.image}];
             });
         },
@@ -100770,15 +100788,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
-                    axios.put('/admin/sites/' + _this2.site.id, _this2.site, _this2.photo);
-                    // .then((res) => {
-                    //     this.$message({
-                    //         message: '(∩ _ ∩)编辑成功',
-                    //         type: 'success'
-                    //     });
-                    //     this.init();
-                    //     this.$router.push({name: 'sites'})
-                    // });
+                    axios.put('/admin/sites/' + _this2.site.id, _this2.site, _this2.photo).then(function (res) {
+                        _this2.$message({
+                            message: '(∩ _ ∩)编辑成功',
+                            type: 'success'
+                        });
+                        _this2.init();
+                        _this2.$router.push({ name: 'sites' });
+                    });
                 } else {
                     console.log('error submit!!');
                     return false;

@@ -120,7 +120,25 @@
                 this.$router.push({name: 'siteCreate'})
             },
             siteDelete(index, row) {
-                console.log(index, row);
+                this.$confirm('亲 (●ﾟωﾟ●)确定要删除吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    axios.delete(`/admin/sites/${row.id}`)
+                        .then((res) => {
+                            this.$message({
+                                type: 'success',
+                                message: 'OK,删除成功!'
+                            });
+                            this.init();
+                        });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             },
             //是否显示
             change_attr(row) {
