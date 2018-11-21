@@ -68,12 +68,12 @@
             <el-table-column label="操作" width="150">
                 <template slot-scope="scope">
                     <router-link :to="{ name:'courseEdit',params: { id: scope.row.id }}">
-                        <el-button size="mini" type="primary">编辑</el-button>
+                        <el-button type="primary" icon="el-icon-edit" circle></el-button>
                     </router-link>
                     <router-link :to="{ name:'chapters',params: { course_id: scope.row.id }}">
-                        <el-button size="mini" type="warning">章节</el-button>
+                        <el-button type="warning" icon="el-icon-document" circle></el-button>
                     </router-link>
-                    <el-button size="mini" type="danger" @click="courseDelete(scope.$index, scope.row)">删除</el-button>
+                    <el-button type="danger" icon="el-icon-delete" circle @click="courseDelete(scope.$index, scope.row)"></el-button>
                 </template>
             </el-table-column>
         </el-table>

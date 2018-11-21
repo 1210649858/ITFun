@@ -122288,11 +122288,13 @@ var render = function() {
                         }
                       },
                       [
-                        _c(
-                          "el-button",
-                          { attrs: { size: "mini", type: "primary" } },
-                          [_vm._v("编辑")]
-                        )
+                        _c("el-button", {
+                          attrs: {
+                            type: "primary",
+                            icon: "el-icon-edit",
+                            circle: ""
+                          }
+                        })
                       ],
                       1
                     ),
@@ -122308,27 +122310,29 @@ var render = function() {
                         }
                       },
                       [
-                        _c(
-                          "el-button",
-                          { attrs: { size: "mini", type: "warning" } },
-                          [_vm._v("章节")]
-                        )
+                        _c("el-button", {
+                          attrs: {
+                            type: "warning",
+                            icon: "el-icon-document",
+                            circle: ""
+                          }
+                        })
                       ],
                       1
                     ),
                     _vm._v(" "),
-                    _c(
-                      "el-button",
-                      {
-                        attrs: { size: "mini", type: "danger" },
-                        on: {
-                          click: function($event) {
-                            _vm.courseDelete(scope.$index, scope.row)
-                          }
-                        }
+                    _c("el-button", {
+                      attrs: {
+                        type: "danger",
+                        icon: "el-icon-delete",
+                        circle: ""
                       },
-                      [_vm._v("删除")]
-                    )
+                      on: {
+                        click: function($event) {
+                          _vm.courseDelete(scope.$index, scope.row)
+                        }
+                      }
+                    })
                   ]
                 }
               }
