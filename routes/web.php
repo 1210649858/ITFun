@@ -30,6 +30,43 @@ Route::prefix('admin')->namespace('Admin')->group(function (){
     Route::middleware('auth.admin:admin')->name('admin.')->group(function () {
         //后台首页
         $this->get('/', 'DashboardController@index');
+
+        //课程概览
+        $this->get('/overviews', 'CourseController@overview');
+
+        //课程列表
+        $this->resource('courses','CourseController')->except('show', 'create');
+
+        //课程章节
+        Route::prefix('chapters')->group(function () {
+            $this->patch('change_sort', 'ChapterController@change_sort');//排序
+            $this->patch('change_attr', 'ChapterController@change_attr');//改变属性
+        });
+        $this->resource('chapters', 'ChapterController')->except('index', 'create', 'show');
+
+        //课程分类
+        Route::prefix('course_nodes')->group(function () {
+            $this->patch('change_sort', 'CourseNodeController@change_sort');//排序
+            $this->post('destroy_checked', 'CourseNodeController@destroy_checked');//多选删除
+        });
+        $this->resource('course_nodes','CourseNodeController')->except('show', 'create');
+
+        //标签列表
+        Route::prefix('tag')->group(function () {
+            $this->patch('change_attr', 'TagController@change_attr');//改变属性
+            $this->patch('change_sort', 'TagController@change_sort');//排序
+        });
+        $this->resource('tags','TagController')->except('show', 'create');
+
+        //新闻分类
+        Route::prefix('notice_nodes')->group(function () {
+            $this->patch('change_sort', 'NoticeNodeController@change_sort');//排序
+            $this->post('destroy_checked', 'NoticeNodeController@destroy_checked');//多选删除
+        });
+        $this->resource('notice_nodes','NoticeNodeController')->except('show', 'create');
+        //新闻列表
+        $this->resource('notices','NoticeController')->except('show', 'create');
+
         //酷站分类
         Route::prefix('site_nodes')->group(function () {
             $this->patch('change_sort', 'SiteNodeController@change_sort');//排序

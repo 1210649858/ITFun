@@ -5,7 +5,7 @@
         </div>
         <el-submenu index='1'>
             <template slot="title">管理员: {{admin.name}}</template>
-            <el-menu-item index='1' @click="logout()">退出</el-menu-item>
+            <el-menu-item index='1' @click="logout(admin)">退出</el-menu-item>
         </el-submenu>
     </el-menu>
 
@@ -19,18 +19,21 @@
             };
         },
         methods: {
-            logout(){
-                axios.post(`http://itfun.test/admin/logout`)
+            logout(admin){
+                axios.post(`http://itfun.test/admin/logout`,admin)
                     .then((res) => {
                         this.$message({
                             type: 'success',
-                            message: '已退出'
+                            message: '您已成功退出'
                         });
+                        reload();
                     })
             }
         }
     }
-
+    var reload = function(){
+        window.location.reload();
+    }
 </script>
 
 <style scoped>

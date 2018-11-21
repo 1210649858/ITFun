@@ -12,6 +12,29 @@
                 <i class="el-icon-menu"></i>首&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;页
             </span>
         </el-menu-item>
+
+        <el-submenu index="1">
+            <template slot="title">
+                <i class="el-icon-edit"></i>
+                <span>课程管理</span>
+            </template>
+            <el-menu-item-group>
+                <el-menu-item index="/overviews"><i class="el-icon-view"></i>课程概览</el-menu-item>
+                <el-menu-item index="/courses"><i class="el-icon-tickets"></i>课程列表</el-menu-item>
+                <el-menu-item index="/course_nodes"><i class="el-icon-menu"></i>课程分类</el-menu-item>
+                <el-menu-item index="/tags"><i class="el-icon-date"></i>标签列表</el-menu-item>
+            </el-menu-item-group>
+        </el-submenu>
+        <el-submenu index="2">
+            <template slot="title">
+                <i class="el-icon-document"></i>
+                <span>新闻管理</span>
+            </template>
+            <el-menu-item-group>
+                <el-menu-item index="/notices"><i class="el-icon-tickets"></i>新闻列表</el-menu-item>
+                <el-menu-item index="/notice_nodes"><i class="el-icon-date"></i>新闻分类</el-menu-item>
+            </el-menu-item-group>
+        </el-submenu>
         <el-submenu index="3">
             <template slot="title">
                 <i class="el-icon-location"></i>
@@ -24,7 +47,7 @@
         </el-submenu>
         <el-submenu index="4">
             <template slot="title">
-                <i class="el-icon-view"></i>
+                <i class="el-icon-service"></i>
                 <span>广告中心</span>
             </template>
             <el-menu-item-group>
@@ -32,8 +55,6 @@
                 <el-menu-item index="/advert_nodes"><i class="el-icon-date"></i>广告分类</el-menu-item>
             </el-menu-item-group>
         </el-submenu>
-
-
     </el-menu>
 </template>
 

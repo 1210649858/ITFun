@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Advert;
+use App\Models\Photo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -22,38 +23,40 @@ class AdvertController extends Controller
                 $query->where('advert_node_id', 'like', $search);
             }
         };
-        $adverts =Advert::with('advert_node','photo')->orderBy('sort')->where($where)->where($category)->paginate(5);
+        $adverts =Advert::with('advert_node','photo')->orderBy('sort','desc')->where($where)->where($category)->paginate(5);
         return response()->json($adverts);
-    }
-
-    public function create()
-    {
-        //
     }
 
     public function store(Request $request)
     {
-        //
-    }
-
-    public function show($id)
-    {
-        //
+        $advert =Advert::create($request->all());
+        return response()->json($advert);
     }
 
     public function edit($id)
     {
-        //
+        $advert =Advert::with('photo')->find($id);
+        return response()->json($advert);
     }
 
     public function update(Request $request, $id)
     {
-        //
+        $advert =Advert::find($id);
+        $advert->update($request->all());
     }
 
     public function destroy($id)
     {
-        //
+        $advert =Advert::find($id);
+        Advert::destroy($id);
+        Photo::destroy($advert->photo_id);
     }
 
+    //排序
+    public function change_sort(Request $request )
+    {
+        $advert =Advert::find($request->id);
+        $advert ->sort= $request ->sort;
+        $advert ->save();
+    }
 }

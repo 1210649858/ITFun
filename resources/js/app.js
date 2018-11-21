@@ -11,8 +11,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 import App from './components/App'
 import router from './router'
 
+
 window.Vue = require('vue');
 Vue.use(ElementUI);
+
 
 /**
  * The following block of code may be used to automatically register your

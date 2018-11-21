@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Advert extends Model
+class Notice extends Model
 {
     protected $guarded=['image','photo'];
 
-    public function advert_node(){
-        return $this->belongsTo('App\Models\AdvertNode');
+    public function notice_node(){
+        return $this->belongsTo('App\Models\NoticeNode');
     }
 
     public function photo(){

@@ -21,6 +21,7 @@
     "vue-router": "^3.0.1"
   },
   "dependencies": {
-    "element-ui": "^2.4.9"
+    "element-ui": "^2.4.9",
+    "vue-quill-editor": "^3.0.6"
   }
 }

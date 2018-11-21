@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>ITFun_微信平台</title>
+    <title>ITFun_后台管理系统</title>
 
     <script>
         window.admin ={!! auth('admin')->user() !!}

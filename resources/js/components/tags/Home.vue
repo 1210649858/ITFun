@@ -2,26 +2,26 @@
     <div>
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>广告管理</el-breadcrumb-item>
-            <el-breadcrumb-item>广告列表</el-breadcrumb-item>
+            <el-breadcrumb-item>课程管理</el-breadcrumb-item>
+            <el-breadcrumb-item>标签列表</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="hengxian"></div>
 
         <el-form :inline="true" :model="search" class="search" ref="ruleForm">
             <el-form-item>
-                <el-button type="success" size="small" @click="advertCreate">新增广告</el-button>
+                <el-button type="success" size="small" @click="tagCreate">新增标签</el-button>
             </el-form-item>
-            <el-form-item label="所属分类" prop="advert_node_id">
-                <el-select size="small" v-model="search.advert_node_id" filterable placeholder="请选择">
+            <el-form-item label="所属分类" prop="course_node_id">
+                <el-select size="small" v-model="search.course_node_id" filterable placeholder="请选择">
                     <el-option
-                            v-for="item in advert_nodes"
+                            v-for="item in course_nodes"
                             :key="item.id"
                             :label="item.name"
                             :value="item.id">
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="广告名称" prop="keyword">
+            <el-form-item label="标题" prop="keyword">
                 <el-input size="small" v-model="search.keyword"></el-input>
             </el-form-item>
             <el-form-item>
@@ -30,17 +30,24 @@
             </el-form-item>
         </el-form>
 
-        <el-table :data="adverts" style="width: 100%">
+        <el-table :data="tags" style="width: 100%">
             <el-table-column label="编号" prop="id" width="50"></el-table-column>
-            <el-table-column label="广告图片" width="150">
+            <el-table-column label="标题" prop="name" width="200" :show-overflow-tooltip="true"></el-table-column>
+
+            <el-table-column label="所属分类" width="200">
                 <template slot-scope="scope">
-                    <a :href="scope.row.url" target="_blank"><img :src="scope.row.photo.image"
-                                                                  style="width: 60px;height: 60px"></a>
+                    <el-button type="success" size="mini">{{ scope.row.course_node.name}}</el-button>
                 </template>
             </el-table-column>
-            <el-table-column label="广告名称" prop="name" width="200"></el-table-column>
-            <el-table-column label="所属分类" prop="advert_node.name" width="150"></el-table-column>
-            <el-table-column label="排序" prop="sort" width="80">
+
+            <el-table-column label="是否显示" width="200">
+                <template slot-scope="scope" prop="is_show">
+                    <i :class="scope.row.is_show ? 'el-icon-circle-check-outline' : 'el-icon-circle-close-outline'"
+                       @click="change_attr(scope.row)"></i>
+                </template>
+            </el-table-column>
+
+            <el-table-column label="排序" prop="sort" width="100">
                 <template slot-scope="scope">
                     <el-input v-model="scope.row.sort"  @change="change(scope.$index, scope.row)" size="small"></el-input>
                 </template>
@@ -53,10 +60,10 @@
             </el-table-column>
             <el-table-column label="操作" width="200">
                 <template slot-scope="scope">
-                    <router-link :to="{ name:'advertEdit',params: { id: scope.row.id }}">
+                    <router-link :to="{ name:'tagEdit',params: { id: scope.row.id }}">
                         <el-button size="mini" type="primary">编辑</el-button>
                     </router-link>
-                    <el-button size="mini" type="danger" @click="advertDelete(scope.$index, scope.row)">删除</el-button>
+                    <el-button size="mini" type="danger" @click="tagDelete(scope.$index, scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -66,7 +73,7 @@
             <el-pagination background layout="prev, pager, next"
                            :total="page.total" :page-size="page.size"
                            @current-change="changePage" :current-page.sync="page.currentPage"
-                           style="margin-top:-30px;margin-left:300%">
+                           style="margin-top:-30px;margin-left:100%">
             </el-pagination>
         </div>
     </div>
@@ -76,10 +83,10 @@
     export default {
         data() {
             return {
-                adverts: [],
-                advert_nodes: [],
+                tags: [],
+                course_nodes: [],
                 search: {
-                    advert_node_id: '',
+                    course_node_id: '',
                     keyword: '',
                 },
                 page: {
@@ -93,10 +100,10 @@
         created() { //构造函数
             this.init()
             //所有分类
-            axios.get(`/admin/advert_nodes`)
+            axios.get(`/admin/course_nodes`)
                 .then((res) => {
                     console.log(res)
-                    this.advert_nodes = res.data;
+                    this.course_nodes = res.data;
                 })
         },
         filters:{
@@ -106,24 +113,24 @@
         },
         methods: {
             init() {
-                axios.get(`/admin/adverts?page=${this.page.num}&keyword=${this.search.keyword}&advert_node_id=${this.search.advert_node_id}`)
+                axios.get(`/admin/tags?page=${this.page.num}&keyword=${this.search.keyword}&course_node_id=${this.search.course_node_id}`)
                     .then((res) => {
                         //console.log(res)
-                        this.adverts = res.data.data;
+                        this.tags = res.data.data;
                         this.page.total = res.data.total;
                         this.page.size = res.data.per_page;
                     })
             },
-            advertCreate() {
-                this.$router.push({name: 'advertCreate'})
+            tagCreate() {
+                this.$router.push({name: 'tagCreate'})
             },
-            advertDelete(index, row) {
+            tagDelete(index, row) {
                 this.$confirm('亲 (●ﾟωﾟ●)确定要删除吗?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    axios.delete(`/admin/adverts/${row.id}`)
+                    axios.delete(`/admin/tags/${row.id}`)
                         .then((res) => {
                             this.$message({
                                 type: 'success',
@@ -138,9 +145,19 @@
                     });
                 });
             },
-            //排序
+            //是否显示
+            change_attr(row) {
+                axios.patch(`/admin/tag/change_attr`, {id: row.id, is_show: row.is_show})
+                    .then((res) => {
+                        this.$message({
+                            type: 'success',
+                            message: '改变成功!'
+                        });
+                        this.init()
+                    })
+            },
             change(index, row) {
-                axios.patch(`/admin/advert/change_sort`,row)
+                axios.patch(`/admin/tag/change_sort`,row)
                     .then(() => {
                         this.$message({
                             type: 'success',
@@ -176,7 +193,6 @@
         margin-top: 10px;
         border-top: 1px solid #eeeeee;
     }
-
     .el-icon-circle-check-outline {
         color: green;
     }

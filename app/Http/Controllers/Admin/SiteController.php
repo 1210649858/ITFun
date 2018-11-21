@@ -33,11 +33,6 @@ class SiteController extends Controller
         return response()->json($site);
     }
 
-    public function show($id)
-    {
-        //
-    }
-
     public function edit($id)
     {
         $site =Site::with('photo')->find($id);
